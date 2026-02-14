@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Escape 💕</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+h1 {
+    font-size: 8vw;
+    margin: 10px;
+}
+
+#timer {
+    font-size: 6vw;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 5vw;
+    border: none;
+    border-radius: 40px;
+    margin: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#yes {
+    background: #ff2e63;
+    color: white;
+}
+
+#yes:hover {
+    transform: scale(1.2);
+}
+
+#no {
+    background: white;
+    color: #ff2e63;
+    position: absolute;
+}
+
+#loveScreen {
+    position: fixed;
+    inset: 0;
+    background: #ff2e63;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 9vw;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.heart {
+    position: absolute;
+    font-size: 25px;
+    pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Will you be my Valentine? 💖</h1>
+<div id="timer">7</div>
+
+<button id="yes" onclick="showLove()">Yes 💕</button>
+<button id="no">No 😅</button>
+
+<div id="loveScreen">
+    Sarra chose you forever 💍💖<br>
+    No escape 😈
+</div>
+
+<audio id="music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+// 🎵 Start music
+document.body.addEventListener("click", function() {
+    document.getElementById("music").play();
+}, { once: true });
+
+// ⏳ Timer
+let timeLeft = 7;
+let timerElement = document.getElementById("timer");
+
+let countdown = setInterval(() => {
+    timeLeft--;
+    timerElement.innerText = timeLeft;
+
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+        document.getElementById("no").style.display = "none";
+        timerElement.innerText = "Too late 😌";
+    }
+}, 1000);
+
+// 😈 NO button behaviour
+let noBtn = document.getElementById("no");
+let attempts = 0;
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+function moveButton() {
+    attempts++;
+
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 100);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    // shrink button
+    let newSize = 5 - attempts;
+    if (newSize > 1) {
+        noBtn.style.fontSize = newSize + "vw";
+    }
+
+    if (attempts >= 3) {
+        noBtn.style.display = "none";
+        alert("You really thought you had a choice? 😏");
+    }
+}
+
+// 💍 YES button
+function showLove() {
+    document.getElementById("loveScreen").style.display = "flex";
+
+    // Massive heart explosion
+    for (let i = 0; i < 80; i++) {
+        createHeart();
+    }
+}
+
+// 💕 Explosion hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+
+    heart.style.left = (window.innerWidth / 2) + "px";
+    heart.style.top = (window.innerHeight / 2) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        heart.style.transition = "1s";
+        heart.style.opacity = 0;
+    }, 10);
+
+    setTimeout(() => heart.remove(), 1000);
+}
+</script>
+
+</body>
+</html>
